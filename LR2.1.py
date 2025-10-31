@@ -2,7 +2,7 @@ import math
 import random
 import matplotlib.pyplot as plt
 
-with open("/home/aroya/MSAD/Москва_2021.txt", 'r') as f:
+with open("Москва_2021.txt", 'r') as f:
     a = list(map(int, f))
 
 gamma = 0.95
@@ -73,5 +73,5 @@ if interval_bounds:
     plt.xticks(centers, [f'[{b[0]}, {b[1]})' for b in interval_bounds], rotation=45)
     plt.ylim(0, 1)
 
-    plt.savefig('/home/aroya/MSAD/histogram.png', dpi=300, bbox_inches='tight') 
+    plt.savefig('/home/aroya/statistical_analysis/histogram.png', dpi=300, bbox_inches='tight') 
     plt.show()

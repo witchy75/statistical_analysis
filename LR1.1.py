@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import math
 
-with open("/home/aroya/MSAD/Москва_2021.txt", 'r') as f:
+with open("Москва_2021.txt", 'r') as f:
     a = list(map(int, f))
 groups = 7
 interval = math.ceil((max(a) - min(a))/groups)
