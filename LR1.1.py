@@ -7,7 +7,6 @@ groups = 7
 interval = math.ceil((max(a) - min(a))/groups)
 a.sort()
 uniques = list(set(a))
-number_of_repetitions = []
 print("дискретные ряды:")
 print("№, число кол-во повторений вероятность")
 for i in range(len(uniques)):
@@ -15,9 +14,6 @@ for i in range(len(uniques)):
     y = a.count(uniques[i])
     z = round(y/len(a), 3)
     print(i + 1, ':', x, '       ', y, '           ', z)
-for i in range(len(uniques)):
-    m = a.count(uniques[i])
-    number_of_repetitions.append(m)
 
 intervals = []
 current = min(a)
@@ -193,5 +189,4 @@ for i, (x, y) in enumerate(zip(sorted_uniques, sorted_repetitions)):
     plt.text(x, y + 100, str(y), ha='center', va='bottom', fontsize=9)
 
 plt.tight_layout()
-plt.savefig('histogram_polygon.png')
-
+plt.savefig('images/histogram_polygon.png')

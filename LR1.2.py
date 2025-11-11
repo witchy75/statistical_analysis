@@ -151,5 +151,5 @@ plt.minorticks_on()
 plt.grid(which='major', linestyle='-', linewidth=0.5)
 plt.grid(which='minor', linestyle=':', linewidth=0.5)
 
-plt.savefig('statistical_distribution_function.png', dpi=300, bbox_inches='tight')
+plt.savefig('images/statistical_distribution_function.png', dpi=300, bbox_inches='tight')
 plt.show()

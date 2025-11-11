@@ -73,5 +73,5 @@ if interval_bounds:
     plt.xticks(centers, [f'[{b[0]}, {b[1]})' for b in interval_bounds], rotation=45)
     plt.ylim(0, 1)
 
-    plt.savefig('/home/aroya/statistical_analysis/histogram.png', dpi=300, bbox_inches='tight') 
+    plt.savefig('images/histogram.png', dpi=300, bbox_inches='tight') 
     plt.show()
