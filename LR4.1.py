@@ -1,6 +1,7 @@
 import math
 import pandas as pd
 from scipy import stats
+import matplotlib.pyplot as plt
 
 with open("Москва_2021.txt", 'r') as f:
     a = list(map(int, f))
@@ -12,28 +13,24 @@ discrete = []
 for i in range(len(uniques)):
     age = uniques[i]
     count = a.count(uniques[i])
-    probability = round(count/len(a), 3)
-    frequency = count * probability
-    discrete.append([age, count, frequency])
+    discrete.append([age, count])
 df = pd.DataFrame(discrete)
-df.columns = ["возраст преступника", "кол-во преступлений", "частота преступлений"]
+df.columns = ["возраст преступника", "кол-во преступлений"]
 print(df)
 
+n = len(df["возраст преступника"])
+mean_x = df["возраст преступника"].mean()
+mean_y = df["кол-во преступлений"].mean()
 
-corr_matrix = df[["возраст преступника", "частота преступлений"]].corr()
-corr_matrix
-r = corr_matrix.iloc[0, 1]
+cov_xy = sum((xi - mean_x) * (yi - mean_y) for xi, yi in zip(df["возраст преступника"], df["кол-во преступлений"])) / n
 
-cov_matrix = round(df[["возраст преступника", "частота преступлений"]].cov(), 4)
-print(f"""матрица ковариаций:
-      {cov_matrix}
-""")
-print(f"ковариация: {round(cov_matrix.iloc[0, 1], 4)}\n")
+std_x = (sum((xi - mean_x)**2 for xi in df["возраст преступника"]) / n)**0.5
+std_y = (sum((yi - mean_y)**2 for yi in df["кол-во преступлений"]) / n)**0.5
+r = cov_xy / (std_x * std_y)
 
-std_x = df["возраст преступника"].std()
-std_y = df["частота преступлений"].std()
-print(f"ско x: {round(std_x, 4)}")
-print(f"ско y: {round(std_y, 4)}\n")
+print(f"ковариация: {round(cov_xy, 1)}")
+print(f"ско x: {round(std_x, 1)}")
+print(f"ско y: {round(std_y, 1)}\n")
 
 print(f"коэффициент линейной корреляции между возрастом преступника (X) и частотой совершаемых преступлений (Y) = {round(r, 4)}\n")
 print(f"проверим выполнение свойств коэффициента корреляции Пирсона:\n")
@@ -51,7 +48,7 @@ else:
 data_corr = df.copy()
 data_corr * 2
 data_corr + 10
-data_corr_matrix = data_corr[["возраст преступника", "частота преступлений"]].corr()
+data_corr_matrix = data_corr.corr()
 if data_corr_matrix.iloc[0, 1] == r:
     print("свойство 3) r не меняется от прибавления к х и у постоянных (неслучайных) слагаемых и от умножения х и у на положительные числа - выполняется")
 else:
@@ -84,24 +81,16 @@ k = len(uniques) - 2
 T = (r * math.sqrt(k)) / math.sqrt(1 - r**2)
 print(f"В качестве критерия проверки нулевой гипотезы принимем случайную величину T = {round(T, 5)}")
 
-t_cr = stats.t.ppf(alpha, k)
+t_cr = stats.t.ppf(1 - alpha/2, k)
 print(f"tкр = {round(t_cr, 4)}\n")
 if abs(T) < t_cr:
     print(f"так как |Tнабл| < tнабл, нет оснований отвергнуть нулевую гипотезу")
 else:
     print(f"так как |Tнабл| > tнабл, нуневая гипотеза отвергается")
 
-
-import matplotlib.pyplot as plt
-
 plt.figure(figsize=(20, 6))
 plt.scatter(df["возраст преступника"], df["кол-во преступлений"])
-plt.plot(df["возраст преступника"], df["кол-во преступлений"])
 plt.xticks(df["возраст преступника"])
-
-for i, row in df.iterrows():
-    plt.annotate(f"({row['возраст преступника']}; {row["кол-во преступлений"]:.1f})", (row["возраст преступника"], row["кол-во преступлений"]), textcoords="offset points", xytext=(5, 5))
-
 plt.xlabel("возраст преступника")
 plt.ylabel("кол-во преступлений")
 plt.title('корреляционное поле')
